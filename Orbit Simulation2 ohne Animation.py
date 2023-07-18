@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import matplotlib.patches as mpatches
 
+fig, ax = plt.subplots()
+ax.set_aspect('equal')
+
 def twoBodyProblem(start, t):
     mu = 3.986004418E+05
     x = start[0]
@@ -28,8 +31,22 @@ sol = odeint(twoBodyProblem, state_0, t)
 X_Sat = sol[:, 0]
 Y_Sat = sol[:, 1]
 
-fig, ax = plt.subplots()
-ax.set_aspect('equal')
+#Brennpunkte
+X_Max = X_Sat.max()
+X_Min = X_Sat.min()
+Y_Max = Y_Sat.max()
+Y_Min = Y_Sat.min()
+
+X_Mid = (X_Max - X_Min)/2
+Y_Mid = (Y_Max - Y_Min)/2
+
+c = np.sqrt((Y_Mid**2)-(X_Mid)**2)
+
+foc1 = Y_Min + c
+foc2 = Y_Max - c
+
+ax.plot(X_Max-X_Mid, foc1, 'r*')
+ax.plot(X_Max-X_Mid, foc2, 'r*')
 
 #plt.plot(X_0, Y_0, 'r*')
 #plt.plot(X_Sat, Y_Sat)
