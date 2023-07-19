@@ -21,11 +21,11 @@ def twoBodyProblem(start, t):
 # Initial Conditions
 X_0 = 0  # [km]
 Y_0 = -5500  # [km]
-VX_0 = 9.8  # [km/s]
+VX_0 = 10.9  # [km/s]
 VY_0 = 0 # [km/s]
 state_0 = [X_0, Y_0, VX_0, VY_0]
 
-t = np.linspace(0, 4*3600, 700)
+t = np.linspace(0, 8*3600, 700)
 
 sol = odeint(twoBodyProblem, state_0, t)
 X_Sat = sol[:, 0]
@@ -37,16 +37,20 @@ X_Min = X_Sat.min()
 Y_Max = Y_Sat.max()
 Y_Min = Y_Sat.min()
 
-X_Mid = (X_Max - X_Min)/2
-Y_Mid = (Y_Max - Y_Min)/2
+X_Mid = (X_Max + X_Min)/2
+Y_Mid = (Y_Max + Y_Min)/2
 
 c = np.sqrt((Y_Mid**2)-(X_Mid)**2)
 
-foc1 = Y_Min + c
-foc2 = Y_Max - c
+print(c)
+print(X_Mid)
+print(Y_Mid)
 
-ax.plot(X_Max-X_Mid, foc1, 'r*')
-ax.plot(X_Max-X_Mid, foc2, 'r*')
+foc1 = Y_Mid + c
+foc2 = Y_Mid - c
+
+ax.plot(X_Mid, foc1, 'r*')
+ax.plot(X_Mid, foc2, 'r*')
 
 #plt.plot(X_0, Y_0, 'r*')
 #plt.plot(X_Sat, Y_Sat)
@@ -58,11 +62,11 @@ X_Earth = r_Earth * np.cos(phi)
 Y_Earth = r_Earth * np.sin(phi)
 ax.plot(X_Earth, Y_Earth, color='green')
 ax.plot(X_Sat, Y_Sat, color='blue')
-ax.plot(X_0,Y_0,'r*')
+ax.plot(X_0,Y_0,'b*')
 
 plt.title('Orbit Simulation')
 plt.xlabel('km')
 plt.ylabel('km')
-red_patch = mpatches.Patch(color='blue', label='Umlaufbahn')
-ax.legend(handles=[red_patch])
+#red_patch = mpatches.Patch(color='blue', label='Umlaufbahn')
+#ax.legend(handles=[red_patch])
 plt.show()
